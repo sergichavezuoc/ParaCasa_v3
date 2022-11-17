@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Edit menu</title> 
+    <div th:insert="fragments/header"></div>
+</head>
+<body>
+    <div th:insert="fragments/navbar"></div>
+    <div class="container" style="margin-top: 80px;">
+    <h1 th:text="'Edit Order ID:'+${order.id}" />
+    <h2 th:text="'Customer: '+${order.customerName}+' Date: '+${order.dateAdded}" />
+    <table class="table">
+        <thead>
+            <th>Menus in this order</th>
+            <th></th>
+        </thead>
+    <tr th:each="menuinorder: ${menusinorder}"> 
+        <td th:text="${menuinorder.name}" />  
+        <td><form th:name="${menuinorder.id}" th:action="@{'/admin/menuinorderes/del/' + ${menuinorder.id}}" th:method="delete"><input type="hidden" name="id" th:value="${order.id}" /><input class="btn btn-danger" type="submit" value="delete" /></form></span></td>
+    </table>  
+  </form>
+  <form action="#" 
+  th:action="@{/admin/orderinmenu/}" 
+  method="post">
+  <div class="form-group">
+    <label for="menuid">Add menus to this order</label>
+    <select class="form-control" name="menuid" id="menuid" placeholder="Menu">
+        <option th:each="menu: ${menus}" th:value="${menu.id}" th:text="${menu.name}"></option>
+    </select>
+</div>
+<input type="hidden" name="id" th:value="${order.id}" />
+<input type="submit" class="btn btn-primary" value="Add Menu to Order"> 
+
+    
+  </form>
+</body>
+</html>

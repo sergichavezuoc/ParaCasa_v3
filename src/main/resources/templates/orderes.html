@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>List of orders</title> 
+    <div th:insert="fragments/header"></div>
+</head>
+<body>
+    <div th:insert="fragments/navbar"></div>
+    <div class="container" style="margin-top: 80px;">
+    <h1 th:text="'Listado de pedidos'" />
+    <table class="table">
+    <thead>
+        <th>Id</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+    </thead>
+    <tr th:each="order: ${orders}">
+        <td th:text="${order.id}" />
+        <td th:text="${order.customerName}" />
+        <td th:text="${order.dateAdded}" />
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-info" th:href="@{'/admin/orderes/' + ${order.id} + '/edit'}">Show/add menus</a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><form th:name="${order.id}" th:action="@{'/admin/orderes/del/' + ${order.id}}" th:method="delete"><input class="btn btn-danger" type="submit" value="delete" /></form></span></td>
+    </tr>
+    
+</table>
+<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/admin/orderes/add'}"><input type="button" class="btn btn-primary" value="Add Order" /></a>
+</div>
+</body>
+</html>

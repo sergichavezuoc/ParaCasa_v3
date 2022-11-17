@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>List of Menus</title> 
+    <div th:insert="fragments/header"></div>
+</head>
+<body>
+    <div th:insert="fragments/navbar"></div>
+    <div class="container" style="margin-top: 80px;">
+    <h1 th:text="'Listado de clientes'" />
+    <table class="table">
+    <thead>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </thead>
+    <tr th:each="user: ${users}">
+        <td th:text="${user.id}" />
+        <td th:text="${user.name}" />
+        <td th:text="${user.email}" />
+        <td><a th:href="@{'/admin/users/' + ${user.id} + '/edit'}"><input class="btn btn-warning" type="submit" value="edit" /></a></td>
+        <td><form th:name="${user.id}" th:action="@{'/admin/users/del/' + ${user.id}}" th:method="delete"><input class="btn btn-danger" type="submit" value="delete" /></form></span></td>
+        <td><a th:href="@{'/admin/orderes/?userid=' + ${user.id}}"><input class="btn btn-info" value="View Orders"/></a></td>
+    </tr>
+</table>
+<a th:href="@{'/admin/users/add'}"><input type="button" class="btn btn-primary" value="Add Customer" /></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>List of restaurants</title> 
+    <div th:insert="fragments/header"></div>
+</head>
+<body>
+    <div th:insert="fragments/navbar"></div>
+    <div class="container" style="margin-top: 80px;">
+    <h1 th:text="'List of restaurants'" />
+    <table class="table">
+    <thead>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th sec:authorize="hasRole('ROLE_USER')"></th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+    </thead>
+    <tr th:each="restaurant: ${restaurants}">
+        <td th:text="${restaurant.id}" />
+        <td th:text="${restaurant.name}" />
+        <td th:text="${restaurant.description}" />
+        <td sec:authorize="hasRole('ROLE_USER')"><a th:href="@{'/user/restaurants/' + ${restaurant.id} + '/menus'}"><input class="btn btn-info" value="Show Menus" /></a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/admin/restaurants/' + ${restaurant.id} + '/menus'}"><input class="btn btn-info" value="Show Menus" /></a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/admin/restaurants/' + ${restaurant.id} + '/edit'}"><input class="btn btn-warning" type="submit" value="edit" /></a></td>
+        <td sec:authorize="hasRole('ROLE_ADMIN')"><form th:name="${restaurant.id}" th:action="@{'/admin/restaurants/del/' + ${restaurant.id}}" th:method="delete"><input class="btn btn-danger" type="submit" value="delete" /></form></span></td>
+
+    </tr>
+    
+</table>
+<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/admin/restaurants/add'}"><input type="button" class="btn btn-primary" value="Add Restaurant" /></a>
+</div>
+</body>
+</html>

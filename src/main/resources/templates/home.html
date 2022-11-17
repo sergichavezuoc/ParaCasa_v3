@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head> 
+    <title>ParaCasa</title> 
+    <div th:insert="fragments/header"></div>
+</head>
+<body>
+
+    <div th:insert="fragments/navbar"></div>
+    <span th:text="${user}"></span>
+    <div class="container" style="margin-top: 150px;">
+        <div class="card" style="width: 60rem;border: 1px black solid;margin: auto;background-color: rgb(240, 240, 240);">
+            <div class="card-body" style="margin: 20px">
+              <h3 class="card-title">ParaCasa</h3>
+              
+              <h4 class="card-subtitle mb-2 text-muted">Eat at home</h6>
+              <p class="card-text" style="font-size: 18px;">
+                This application join a group of restaurants and all they have to offer. You can order whatever you want. You can start by browsing our excellent cuisine</p>
+              <a sec:authorize="hasRole('ROLE_USER')" href="/user/restaurants" class="card-link">Browse by restaurant</a><br />
+              <a sec:authorize="hasRole('ROLE_ADMIN')" href="/admin/restaurants" class="card-link">Browse by restaurant</a><br />
+              <a sec:authorize="hasRole('ROLE_ADMIN')" href="/admin/menus" class="card-link">Browse by menus</a>
+            </div>
+          </div>
+</div>
+</body>
+</html>

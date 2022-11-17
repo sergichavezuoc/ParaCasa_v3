@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>My profile</title> 
+    <div th:insert="fragments/header"></div>
+</head>
+<body>
+    <div th:insert="fragments/navbar"></div>
+    <div class="container" style="margin-top: 80px;">
+    <h1 th:text="'Profile'" />
+    <table class="tabla">
+        <tr>
+            <td>Name</td>
+            <td th:text="${user.name}"></td>
+        </tr>
+        <tr>
+            <td>Surname</td>
+            <td th:text="${user.name}"></td>
+        </tr>
+        <tr>
+            <td>Username</td>
+            <td th:text="${user.username}"></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td th:text="${user.email}"></td>
+        </tr>
+    </table>
+</body>
+</html>
