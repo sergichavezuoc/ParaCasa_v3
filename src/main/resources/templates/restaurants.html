@@ -10,6 +10,7 @@
     <h1 th:text="'List of restaurants'" />
     <table class="table">
     <thead>
+        <th></th>
         <th>Id</th>
         <th>Name</th>
         <th>Description</th>
@@ -22,6 +23,7 @@
         <td th:text="${restaurant.id}" />
         <td th:text="${restaurant.name}" />
         <td th:text="${restaurant.description}" />
+        <td><img th:src="'/images' + @{${restaurant.photo}} " width="50" height="50"/></td>
         <td sec:authorize="hasRole('ROLE_USER')"><a th:href="@{'/user/restaurants/' + ${restaurant.id} + '/menus'}"><input class="btn btn-info" value="Show Menus" /></a></td>
         <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/admin/restaurants/' + ${restaurant.id} + '/menus'}"><input class="btn btn-info" value="Show Menus" /></a></td>
         <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/admin/restaurants/' + ${restaurant.id} + '/edit'}"><input class="btn btn-warning" type="submit" value="edit" /></a></td>

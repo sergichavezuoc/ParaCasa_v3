@@ -61,6 +61,12 @@ public class Restaurant implements Serializable {
 		this.description = description;
 	}
 
+	@Transient
+    public String getPhotosImagePath() {
+        if (this.photos == null || this.name == null) return null;
+         
+        return "/image"  + "/" + this.photos;
+    }
 
 
 	@Override

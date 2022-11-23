@@ -35,14 +35,18 @@ public class Menu implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private Restaurant restaurant;
+	@Column(nullable = true, length = 64)
+    private String image;
+
 
 	public Menu() {
 	}
 
-	public Menu(String name, String description, Restaurant restaurant) {
+	public Menu(String name, String description, Restaurant restaurant, String image) {
 		this.name = name;
 		this.description = description;
 		this.restaurant = restaurant;
+		this.image = image;
 	}
 
 	public long getId() {
@@ -80,6 +84,20 @@ public class Menu implements Serializable {
 	public Set<Order> getOrders() {
 		return orders;
 	}
+
+	public String getImage() {
+		return this.image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+	@Transient
+    public String getPhotosImagePath() {
+        if (this.image == null || this.name == null) return null;
+         
+        return "/image"  + "/" + this.image;
+    }
 
 	@Override
 	public String toString() {

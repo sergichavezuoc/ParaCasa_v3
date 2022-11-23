@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
 
 import com.example.demo.model.Restaurant;
 import com.example.demo.repository.RestaurantRepository;
@@ -80,9 +82,14 @@ public class RestaurantController {
   }
 
   @PostMapping("/restaurants")
-  public String createRestaurant(@RequestParam String title, @RequestParam String description) {
+  public String createRestaurant(@RequestParam String title, @RequestParam String description, @RequestParam("photos") MultipartFile multipartFile) {
     try {
-      restaurantRepository.save(new Restaurant(title, description, false,""));
+      String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());  
+ 
+      String uploadDir = "src/main/resources/static/images/" ;
+      String nameToSaveinDataBase =  '/' + fileName;      
+      FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+      restaurantRepository.save(new Restaurant(title, description, false, nameToSaveinDataBase));
       return "creado";
     } catch (Exception e) {
       return "error";

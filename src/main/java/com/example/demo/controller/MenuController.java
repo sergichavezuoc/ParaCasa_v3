@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.model.Menu;
 import com.example.demo.model.Restaurant;
 import com.example.demo.repository.MenuRepository;
 import com.example.demo.repository.RestaurantRepository;
+
+import org.springframework.util.StringUtils;
 
 
 @CrossOrigin(origins = "http://localhost:8081")
@@ -81,13 +86,19 @@ public class MenuController {
   }
 
   @PostMapping("/menus")
-  public String createMenu(@RequestParam String name, @RequestParam String description, @RequestParam long restaurantsid) {
+  public String createMenu(@RequestParam String name, @RequestParam String description, @RequestParam long restaurantsid,  @RequestParam("image") MultipartFile multipartFile) throws IOException {
     System.out.println("identificador de menu");
 
     Optional<Restaurant> menu = restaurantRepository.findById(restaurantsid);
     
     if (menu.isPresent()) {
-      Menu menuRequest = new Menu(name, description, menu.get());
+      String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());  
+ 
+      String uploadDir = "src/main/resources/static/images/" ;
+      String nameToSaveinDataBase =  '/' + fileName;      
+ 
+      FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+      Menu menuRequest = new Menu(name, description, menu.get(), nameToSaveinDataBase);
       menuRepository.save(menuRequest);
       return "creado";
     } else {
