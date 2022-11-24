@@ -37,16 +37,20 @@ public class Menu implements Serializable {
 	private Restaurant restaurant;
 	@Column(nullable = true, length = 64)
     private String image;
-
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "type_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private MenuType menuType;
 
 	public Menu() {
 	}
 
-	public Menu(String name, String description, Restaurant restaurant, String image) {
+	public Menu(String name, String description, Restaurant restaurant, String image, MenuType menuType) {
 		this.name = name;
 		this.description = description;
 		this.restaurant = restaurant;
 		this.image = image;
+		this.menuType=menuType;
 	}
 
 	public long getId() {
@@ -91,6 +95,16 @@ public class Menu implements Serializable {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public Long getTypeId() {
+		return menuType.getId();
+	}
+
+	public String getType() {
+		return menuType.getType();
+	}
+	public void setType(MenuType menuType){
+	this.menuType=menuType;
 	}
 	@Transient
     public String getPhotosImagePath() {

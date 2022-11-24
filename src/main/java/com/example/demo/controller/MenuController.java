@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.Menu;
+import com.example.demo.model.MenuType;
 import com.example.demo.model.Restaurant;
 import com.example.demo.repository.MenuRepository;
+import com.example.demo.repository.MenuTypeRepository;
 import com.example.demo.repository.RestaurantRepository;
 
 import org.springframework.util.StringUtils;
@@ -40,7 +42,8 @@ public class MenuController {
   MenuRepository menuRepository;
   @Autowired
   RestaurantRepository restaurantRepository;
-
+  @Autowired
+  MenuTypeRepository menuTypeRepository;
   @GetMapping("/menus")
   public String getAllMenus(@RequestParam(required = false) String title, Model model) {
     try {
@@ -81,24 +84,27 @@ public class MenuController {
   public String addMenu(Model model) {
     List<Restaurant> restaurants = new ArrayList<Restaurant>();
     restaurantRepository.findAll().forEach(restaurants::add);
+    List<MenuType> menuTypes = new ArrayList<MenuType>();
+    menuTypeRepository.findAll().forEach(menuTypes::add);
     model.addAttribute("restaurants", restaurants);
+    model.addAttribute("types", menuTypes);
       return "nuevo_menu";
   }
 
   @PostMapping("/menus")
-  public String createMenu(@RequestParam String name, @RequestParam String description, @RequestParam long restaurantsid,  @RequestParam("image") MultipartFile multipartFile) throws IOException {
+  public String createMenu(@RequestParam String name, @RequestParam String description, @RequestParam long restaurantsid, @RequestParam long menutypeid,  @RequestParam("image") MultipartFile multipartFile) throws IOException {
     System.out.println("identificador de menu");
 
     Optional<Restaurant> menu = restaurantRepository.findById(restaurantsid);
-    
-    if (menu.isPresent()) {
+    Optional<MenuType> menuType = menuTypeRepository.findById(menutypeid);
+    if (menu.isPresent() && menuType.isPresent()) {
       String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());  
  
       String uploadDir = "src/main/resources/static/images/" ;
       String nameToSaveinDataBase =  '/' + fileName;      
  
       FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-      Menu menuRequest = new Menu(name, description, menu.get(), nameToSaveinDataBase);
+      Menu menuRequest = new Menu(name, description, menu.get(), nameToSaveinDataBase, menuType.get());
       menuRepository.save(menuRequest);
       return "creado";
     } else {
@@ -110,9 +116,11 @@ public class MenuController {
   @GetMapping("/menus/{id}/edit")
   public String getMenuById(@PathVariable("id") long id, Model model) {
     Optional<Menu> menuData = menuRepository.findById(id);
-
+    
     if (menuData.isPresent()) {
       List<Restaurant> restaurants = restaurantRepository.findAll();
+      List<MenuType> types = menuTypeRepository.findAll();
+      model.addAttribute("types", types);
       model.addAttribute("restaurants", restaurants);
       model.addAttribute("menu", menuData.get());
       return "modificar_menu";
@@ -122,15 +130,19 @@ public class MenuController {
   }
 
   @PutMapping("/menus/{id}")
-  public String updateMenu(@PathVariable("id") long id, @RequestParam String name, @RequestParam String description, @RequestParam long restaurant) {
+  public String updateMenu(@PathVariable("id") long id, @RequestParam String name, @RequestParam String description, @RequestParam long restaurant, @RequestParam long type) {
     Optional<Menu> menuData = menuRepository.findById(id);
 Optional<Restaurant> restaurantData =restaurantRepository.findById(restaurant);
-    if (menuData.isPresent() && restaurantData.isPresent()) {
+Optional<MenuType> menuTypeData =menuTypeRepository.findById(type);
+    if (menuData.isPresent() && restaurantData.isPresent() && menuTypeData.isPresent()) {
       Menu _menu = menuData.get();
+      MenuType _menuType =menuTypeData.get();
       _menu.setName(name);
       _menu.setDescription(description);
       _menu.setMenu(restaurantData.get());
+      _menu.setType(_menuType);
       menuRepository.save(_menu);
+      menuTypeRepository.save(_menuType);
       return "modificado";
     } else {
       return "id"+id;

@@ -15,6 +15,7 @@
         <th>Name</th>
         <th>Description</th>
         <th>Restaurant</th>
+        <th>Type</th>
         <th sec:authorize="hasRole('ROLE_USER')"></th>
         <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
         <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
@@ -25,12 +26,14 @@
         <td th:text="${menu.name}" />
         <td th:text="${menu.description}" />
         <td th:text="${menu.restaurant}" />
+        <td th:text="${menu.type}" />
         <td sec:authorize="hasRole('ROLE_USER')"><form th:name="${menu.id}" th:action="@{'/user/addorder/'}" th:method="post"><input type="hidden" name="iduser" th:value="${user}" /><input type="hidden" name="idmenu" th:value="${menu.id}" /><input class="btn btn-danger" type="submit" value="Order menu" /></form></td>
         <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/admin/menus/' + ${menu.id} + '/edit'}"><input class="btn btn-warning" type="submit" value="edit" /></a></td>
         <td sec:authorize="hasRole('ROLE_ADMIN')"><form th:name="${menu.id}" th:action="@{'/admin/menus/del/' + ${menu.id}}" th:method="delete"><input class="btn btn-danger" type="submit" value="delete" /></form></span></td>
     </tr>
 </table>
 <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/admin/menus/add'}"><input type="button" class="btn btn-primary" value="Add Menu" /></a>
+<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/admin/menustype/add'}"><input type="button" class="btn btn-primary" value="Add Category" /></a>
 </div>
 </body>
 </html>

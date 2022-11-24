@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>New Category</title> 
+    <div th:insert="fragments/header"></div>
+</head>
+<body>
+    <div th:insert="fragments/navbar"></div>
+    <div class="container" style="margin-top: 80px;">
+    <h1 th:text="'New Order'" />
+    <form action="#" 
+    th:action="@{/admin/menustype/}" 
+    method="post">
+    <div class="form-group row">
+        <label class="col-4 col-form-label">Category: </label>
+        <div class="col-8">
+            <input type="text" name="type" class="form-control" required />
+        </div>
+    </div>
+      <input type="submit" class="btn btn-primary" value="Add Category">   
+  </form>
+</body>
+</html>
