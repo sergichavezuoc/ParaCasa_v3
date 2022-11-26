@@ -28,4 +28,7 @@
 <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{'/admin/orderes/add'}"><input type="button" class="btn btn-primary" value="Add Order" /></a>
 </div>
 </body>
+<div class="container py-3">
+    <div th:insert="fragments/footer"></div>
+</div>
 </html>
