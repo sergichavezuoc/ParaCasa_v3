@@ -35,21 +35,22 @@
                         <div>
                             <input class="btn btn-dark w-100" type="submit" value="Sign In" />
                         </div>
+                        <div class="p-2 mt-1 rounded shadow text-light" style="background-color:  #ffb3b3;" th:if="${param.error}">
+                            Invalid username and password.
+                        </div>
+                        <div class="p-2 mt-1 rounded shadow text-light" style="background-color:  #ffb3b3;" th:if="${param.logout}">
+                            You have been logged out.
+                        </div>
+    
                     </form>
-                    <div th:if="${param.error}">
-                        Invalid username and password.
-                    </div>
-                    <div th:if="${param.logout}">
-                        You have been logged out.
-                    </div>
-
+                    
                 </div>
 
             </div>
         </div>
 
         <div style="width:50%; height: 100%">
-            <img class="img-fluid" src="images/bannervertical.png" />
+            <img class="img-fluid" src="images/bannervertical.jpeg" />
         </div>
 
     </div>
