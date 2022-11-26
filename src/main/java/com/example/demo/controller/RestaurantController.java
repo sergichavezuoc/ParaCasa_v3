@@ -82,7 +82,7 @@ public class RestaurantController {
   }
 
   @PostMapping("/restaurants")
-  public String createRestaurant(@RequestParam String title, @RequestParam String description, @RequestParam("photos") MultipartFile multipartFile) {
+  public String createRestaurant(@RequestParam String title, @RequestParam String description, @RequestParam("image") MultipartFile multipartFile) {
     try {
       String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());  
  
